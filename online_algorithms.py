@@ -7,7 +7,7 @@ def EDF(jobs, T):
     remaining_jobs = {j: jobs[j]['p'] for j in range(len(jobs))}
 
     for t in range(1, T + 1):
-
+        # available jobs at time t
         available_jobs = [j for j in range(len(jobs)) if jobs[j]['r']<= t<= jobs[j]['d'] and remaining_jobs[j] >0 and j not in completed]
 
         if available_jobs:
@@ -26,6 +26,7 @@ def EDF(jobs, T):
                 total -= jobs[j]['l']
     
     return total
+
 def EDF_threshold(jobs, T, a = 1.0):
     total = 0
     completed = set()
@@ -33,9 +34,10 @@ def EDF_threshold(jobs, T, a = 1.0):
     remaining_jobs = {j: jobs[j]['p'] for j in range(len(jobs))}
 
     for t in range(1, T + 1):
-
+        # available jobs at time t
         available_jobs = [j for j in range(len(jobs)) if jobs[j]['r']<= t<= jobs[j]['d'] and remaining_jobs[j] >0 and j not in completed]
         
+        # define scoring function for job selection. Higher score -> higher priority
         def score(j):
             urgency = a / (jobs[j]['d'] - t + 1)
             profit_density = (jobs[j]['w'] + jobs[j]['l'] ) / jobs[j]['p']
@@ -65,9 +67,10 @@ def EDF_replacement(jobs, T):
     running_job = None
 
     for t in range(1, T + 1):
-       
+        # available jobs at time t
         available_jobs = [j for j in range(len(jobs)) if jobs[j]['r']<= t<= jobs[j]['d'] and remaining_jobs[j] >0 and j not in completed]
         
+        # define candidates: available jobs + running job (if any)
         candidates = {j for j in available_jobs if remaining_jobs[j] > 0 and t + remaining_jobs[j] -1 <= jobs[j]['d']}
         if running_job is not None:
             candidates.add(running_job)
@@ -75,6 +78,7 @@ def EDF_replacement(jobs, T):
         if not candidates:
             continue
         
+        # define scoring function for job selection. Higher score -> higher priority
         def score(j):
             remain = remaining_jobs[j]
             if remain <= 0:
