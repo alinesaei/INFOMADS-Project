@@ -26,7 +26,7 @@ def evaluate_algorithms(jobs_list = [10,20,50], T=50):
         _, _, _, opt_profit = offline_alg(jobs, Tt=T, add_interval_cuts= False, time_limit=60)
 
         edf = EDF(jobs, T)
-        threshold = EDF_threshold(jobs, T)
+        threshold = EDF_threshold(jobs, T, a=1.0)
         replacement = EDF_replacement(jobs, T)
 
         results['EDF'].append(edf / opt_profit if opt_profit else 0)
@@ -59,7 +59,7 @@ def evaluate_algorithms_manual():
     _, _, _, opt_profit = offline_alg(manual_jobs, Tt=T, add_interval_cuts= False, time_limit=60)
 
     edf = EDF(manual_jobs, T)
-    threshold = EDF_threshold(manual_jobs, T)
+    threshold = EDF_threshold(manual_jobs, T, a=1.0)
     replacement = EDF_replacement(manual_jobs, T)
 
     print("\nManual Test Case Results:")
@@ -70,11 +70,11 @@ def evaluate_algorithms_manual():
     ratios = [edf/opt_profit, threshold/opt_profit, replacement/opt_profit]
     labels = ['EDF', 'EDF Threshold', 'EDF Replacement']
     plt.bar(labels, ratios)
-    plt.ylim(0, 1.2)
+    plt.ylim(-6.0, 1.2)
     plt.xlabel('Number of Jobs')
     plt.ylabel('Profit Ratio to Optimal')
     plt.title('Online Algorithms Performance')
-    plt.legend()
+    plt.legend(["EDF", "EDF Threshold", "EDF Replacement"])
     plt.grid(True)
     plt.show()
 
