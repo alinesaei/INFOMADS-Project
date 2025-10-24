@@ -23,7 +23,7 @@ def evaluate_algorithms(jobs_list = [10,20,50], T=50):
     
     for n in jobs_list:
         jobs = random_jobs(n, T)
-        _, _, _, opt_profit = offline_alg(jobs, Tt=T, time_limit=60)
+        _, _, _, opt_profit = offline_alg(jobs, Tt=T, add_interval_cuts= False, time_limit=60)
 
         edf = EDF(jobs, T)
         threshold = EDF_threshold(jobs, T)
@@ -56,7 +56,7 @@ def evaluate_algorithms_manual():
         {'r': 2, 'd': 3, 'p': 1, 'w': 3,  'l': 1}     # j5
     ]
     T = 10
-    _, _, _, opt_profit = offline_alg(manual_jobs, Tt=T, time_limit=60)
+    _, _, _, opt_profit = offline_alg(manual_jobs, Tt=T, add_interval_cuts= False, time_limit=60)
 
     edf = EDF(manual_jobs, T)
     threshold = EDF_threshold(manual_jobs, T)
